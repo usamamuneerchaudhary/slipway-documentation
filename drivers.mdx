@@ -1,0 +1,22 @@
+---
+title: "Drivers"
+description: "Enable providers, override the output path, pin GitHub Actions, and merge raw YAML as an escape hatch."
+---
+
+```php
+'drivers' => [
+    'github'    => ['enabled' => true, 'options' => ['permissions' => ['contents' => 'read'], 'pins' => ['actions/checkout' => '<40-char sha>']]],
+    'bitbucket' => ['enabled' => true, 'options' => ['image' => 'php:{php}-cli']],
+    'gitlab'    => ['enabled' => true, 'path' => '.gitlab-ci.yml', 'raw' => ['default' => ['tags' => ['docker']]]],
+],
+```
+
+| Driver | Output | Options |
+|---|---|---|
+| `github` | `.github/workflows/slipway.yml` | `runner`, `permissions`, `pins` |
+| `bitbucket` | `bitbucket-pipelines.yml` | `image`, `shell_image`, `bootstrap`, `size` |
+| `gitlab` | `.gitlab-ci.yml` | `image`, `shell_image`, `bootstrap`, `tags` |
+
+`path` overrides the output file. `raw` is deep-merged into the generated YAML as an escape hatch (maps merge; lists and scalars replace).
+
+See [Provider support](/provider-support) for what each driver can express, and [Writing a driver](/writing-a-driver) to add another provider.

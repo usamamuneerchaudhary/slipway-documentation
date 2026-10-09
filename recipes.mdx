@@ -1,0 +1,27 @@
+---
+title: "Recipes"
+description: "Ploi, Coolify, Dokploy, Kamal and Deployer without a dedicated deployer."
+---
+
+No dedicated deployer is needed for platforms that deploy from a URL or a command:
+
+```php
+// Ploi, Coolify, Dokploy: POST to the deploy webhook (stored as a secret)
+'production' => ['via' => 'webhook', 'options' => ['secret' => 'PLOI_DEPLOY_WEBHOOK']],
+
+// Kamal
+'production' => ['via' => 'command', 'options' => [
+    'commands' => ['gem install kamal', 'kamal deploy'],
+    'secrets' => ['KAMAL_REGISTRY_PASSWORD'],
+    'artifact' => false,
+]],
+
+// Deployer (deployer.org)
+'production' => ['via' => 'command', 'options' => [
+    'commands' => ['vendor/bin/dep deploy production'],
+    'secrets' => ['DEPLOY_SSH_KEY'],
+    'artifact' => false,
+]],
+```
+
+Declare every secret name in `secrets`. See [Deployers](/deployers) for `webhook` and `command` options.

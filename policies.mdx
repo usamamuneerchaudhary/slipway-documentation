@@ -1,0 +1,21 @@
+---
+title: "Policies"
+description: "Policies are checked at compile time. An error stops compilation, so a risky pipeline cannot be merged unnoticed."
+---
+
+| Policy | Fails when |
+|---|---|
+| `declared-secrets` (always on) | The pipeline reads a secret that is not listed in `secrets`. (A declared secret that is never used is a warning.) |
+| `tests-before-deploy` | No test run (Pest, PHPUnit, `artisan test`) precedes the deploy job. |
+| `audit-before-production` | No `composer audit` step precedes the deploy job. |
+| `approval-for-production` | The environment has no manual `approval`. |
+| `verify-production` | The environment has no `verify` health check. |
+| `rollback-for-production` | The environment does not roll back automatically. |
+
+`tests-before-deploy` applies to every environment by default. The others apply to the `production` environment only. Target specific environments with options:
+
+```php
+'policies' => ['tests-before-deploy' => ['environments' => ['staging', 'production']]],
+```
+
+Write your own by implementing `Policy`. See [Extending](/extending).

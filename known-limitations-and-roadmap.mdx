@@ -1,0 +1,21 @@
+---
+title: "Limitations and roadmap"
+description: "What Slipway does not do yet, and ideas that are not promises."
+---
+
+## Known limitations
+
+- **Bitbucket files are large.** Bitbucket Pipelines has no matrix syntax, and Slipway's YAML emitter does not use anchors or aliases (to keep output simple to review and byte-stable), so steps are repeated for each trigger and each PHP version. A full pipeline can run to tens of kilobytes.
+- **No database rollback.** Rollback re-points the release; it does not undo migrations. See [Environments](/environments).
+- **Required reviewers, deployment environments and cron schedules** are provider settings that YAML cannot create.
+- **Feature flags and progressive delivery** (canary, blue/green, flag-driven releases) are not built yet.
+- **Provider output is generated, not hosted.** This repository's own CI runs on the generated GitHub Actions workflow. Bitbucket and GitLab output is covered by the test suite; run `slipway:compile` and review it on your first pipeline run.
+
+## Roadmap
+
+Ideas, not promises, roughly in order:
+
+- A feature-flag step for Laravel Pennant, so a release can ship dark and be enabled separately.
+- A `slipway:rollback` command for rolling back by hand (rollback today is automatic, inside the pipeline).
+- Progressive delivery (canary / blue-green) for the `command` and `ssh` deployers.
+- More services (MariaDB, Meilisearch, ...) and more providers through the same `Driver` contract.

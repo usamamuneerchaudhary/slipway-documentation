@@ -1,0 +1,12 @@
+---
+title: "Notifications"
+description: "Slack or Microsoft Teams webhooks, referenced by secret name."
+---
+
+```php
+'notifications' => ['slack' => ['secret' => 'SLACK_WEBHOOK', 'on' => ['failure']]],
+```
+
+Failure notices run on every job; success notices on the last stage only. The webhook URL is a secret and is referenced by name.
+
+Supported keys: `slack` and `teams`. Each takes `secret` (the secret name) and `on` (`failure`, `success`).

@@ -1,0 +1,37 @@
+---
+title: "Stages and steps"
+description: "Stages run in order. Jobs inside one stage run in parallel. A step is a built-in alias, a PipelineStep class, or an inline POSIX sh command."
+---
+
+```php
+'stages' => [
+    'quality' => [
+        'pint',                                  // alias
+        'larastan' => ['level' => 6],            // alias with options
+        ['run' => 'php artisan lint:routes'],    // inline command
+    ],
+    'test' => ['matrix' => true, 'steps' => ['pest' => ['parallel' => true, 'services' => ['mysql', 'redis']]]],
+],
+```
+
+Stage options: `steps`, `matrix`, `parallel` (one job per step), `php` (a version, or `false` for no PHP), `services`, `timeout`, `on` (`pull_request`, `push`, `tag`, `schedule`, `manual`), `env`, `extensions`.
+
+## Built-in aliases
+
+| Alias | Does | Options |
+|---|---|---|
+| `pint` | `vendor/bin/pint --test` | none |
+| `larastan` / `phpstan` | PHPStan analysis | `level`, `memory_limit` |
+| `composer-validate` | `composer validate --no-interaction --strict` | `strict` (default `true`) |
+| `composer-audit` | `composer audit` (adds `--locked` when `lockfile` is true) | none |
+| `npm-audit` | `npm audit` | `level` |
+| `npm-test` | `npm ci && npm test` (or `npm run <script>`); needs `node` | `script` |
+| `rector` | `vendor/bin/rector process --dry-run`: reports changes, never rewrites files | `config` |
+| `secret-scan` | `slipway:scan`: scans the files git tracks (plus untracked, non-ignored files), so a local gitignored `.env` is never reported | none |
+| `pest` / `phpunit` | Run the tests; prepares `.env` and the app key | `parallel`, `coverage` (`true` or a minimum %), `services`, `testsuite`, `prepare_env` |
+| `build-assets` | `npm ci && npm run build` | `script` |
+| `build-artifact` | Packs **one** tarball, `slipway-build.tar.gz` | `paths`, `optimize` |
+
+Available `services`: `mysql`, `postgres` and `redis`. They start as throwaway containers and the connection settings are exported as environment variables for the job.
+
+To add your own step, see [Extending](/extending).

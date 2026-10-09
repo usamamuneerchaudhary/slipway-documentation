@@ -1,0 +1,24 @@
+---
+title: "Provider support"
+description: "Features a provider cannot express are left out with a warning, or fail compilation in strict mode."
+---
+
+`php artisan slipway:drivers` prints this for your installed drivers.
+
+| Feature | Bitbucket Pipelines | GitHub Actions | GitLab CI/CD |
+|---|---|---|---|
+| PHP version matrix | partial | yes | yes |
+| Service containers | yes | yes | yes |
+| Manual approvals | yes | partial | yes |
+| Deployment environments | partial | yes | yes |
+| Cancel superseded runs | no | yes | partial |
+| Scheduled runs | partial | yes | partial |
+| Manual trigger | yes | yes | yes |
+| Artifact promotion | partial | yes | partial |
+| Path filters | no | yes | no |
+| Job timeouts | yes | yes | yes |
+| Dependency caching | yes | yes | yes |
+| Parallel jobs | yes | yes | yes |
+| Tag triggers | yes | yes | yes |
+
+Some of the "partial" entries need a one-time setting in the provider's UI (for example GitHub required reviewers, Bitbucket deployment environments, GitLab "Auto-cancel redundant pipelines", and the actual cron schedule on Bitbucket and GitLab). Slipway prints exactly which one when it compiles.

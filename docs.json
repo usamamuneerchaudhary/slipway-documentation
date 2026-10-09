@@ -1,53 +1,130 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Slipway",
+  "description": "Define your Laravel CI/CD once in PHP. Compile it to GitHub Actions, Bitbucket Pipelines and GitLab CI.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF6A2B",
+    "light": "#FF6A2B",
+    "dark": "#E5551A"
   },
   "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "/"
+  },
+  "fonts": {
+    "heading": {
+      "family": "Bricolage Grotesque",
+      "weight": 700
+    }
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "background": {
+    "color": {
+      "light": "#F7FAFC",
+      "dark": "#0B1D2E"
+    }
+  },
   "navigation": {
-    "pages": [
+    "groups": [
       {
-        "group": "Getting Started",
+        "group": "Getting started",
         "pages": [
           "index",
-          "quickstart"
+          "quickstart",
+          "presets-and-libraries"
+        ]
+      },
+      {
+        "group": "Concepts",
+        "pages": [
+          "how-it-works",
+          "security-model"
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "configuration",
+          "stages-and-steps",
+          "drivers",
+          "provider-support",
+          "policies",
+          "notifications"
+        ]
+      },
+      {
+        "group": "Deployment",
+        "pages": [
+          "environments",
+          "deployers",
+          "laravel-cloud",
+          "recipes",
+          "ssh-server-setup"
+        ]
+      },
+      {
+        "group": "Extending",
+        "pages": [
+          "extending",
+          "writing-a-driver"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "commands",
+          "known-limitations-and-roadmap",
+          "testing-and-contributing"
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "GitHub",
+          "href": "https://github.com/usamamuneerchaudhary/laravel-slipway",
+          "icon": "github"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Packagist",
+          "href": "https://packagist.org/packages/usamamuneerchaudhary/laravel-slipway",
+          "icon": "box"
         }
       ]
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:support@mintlify.com"
+        "type": "github",
+        "href": "https://github.com/usamamuneerchaudhary/laravel-slipway"
+      },
+      {
+        "label": "Packagist",
+        "href": "https://packagist.org/packages/usamamuneerchaudhary/laravel-slipway"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Get started",
+      "href": "/quickstart"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/usamamuneerchaudhary/laravel-slipway"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "og:site_name": "Slipway",
+      "og:image": "/images/github-social-preview-1280x640.png",
+      "twitter:card": "summary_large_image"
     }
   },
   "contextual": {
@@ -62,11 +139,9 @@
       "vscode"
     ]
   },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-94XPZQXY75"
     }
   }
 }

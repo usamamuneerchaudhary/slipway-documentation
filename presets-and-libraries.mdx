@@ -1,0 +1,36 @@
+---
+title: "Presets and libraries"
+description: "Choose an init preset, and compile Slipway itself through Testbench when the project is a package."
+---
+
+## Presets
+
+| Preset | For | Writes |
+|---|---|---|
+| `app` (default) | A Laravel application: quality + test matrix | `config/slipway.php` |
+| `deploy` | An application with continuous delivery over SSH (staging then production, approval, verify, rollback) | `config/slipway.php` |
+| `package` | A library, run through Testbench | `slipway.php` in the package root |
+
+```bash
+php artisan slipway:init --preset=deploy
+php artisan slipway:init --preset=package
+```
+
+## Libraries (packages)
+
+A library has no `artisan` file and does not commit `composer.lock`. The `package` preset sets:
+
+```php
+'artisan'  => 'vendor/bin/testbench',   // Slipway's own commands run through Testbench
+'lockfile' => false,                    // cache keyed on composer.json; `composer audit` checks what was installed
+```
+
+Add this to the library's `composer.json` so Testbench discovers Slipway's service provider:
+
+```json
+"scripts": {
+    "post-autoload-dump": ["@php vendor/bin/testbench package:discover --ansi"]
+}
+```
+
+then use `vendor/bin/testbench slipway:compile` and `vendor/bin/testbench slipway:check`. The Slipway repository builds its own pipeline that way: see [`slipway.php`](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/slipway.php) and [`.github/workflows/slipway.yml`](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/.github/workflows/slipway.yml).

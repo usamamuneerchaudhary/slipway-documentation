@@ -1,0 +1,28 @@
+---
+title: "Configuration"
+description: "Every key is validated. Unknown keys are rejected with a did-you-mean suggestion, and all problems are reported together."
+---
+
+| Key | Default | Meaning |
+|---|---|---|
+| `name` | `CI` | Pipeline name shown by the provider. |
+| `drivers` | `github` | Map of provider to `true`/`false` or `enabled`, `path`, `options`, `raw`. See [Drivers](/drivers). |
+| `strict` | `false` | `true`: a feature the provider cannot express is a compile error. `false`: it is left out and reported as a warning. |
+| `guard` | `true` | Adds the `slipway-guard` job that runs `slipway:check`. |
+| `lockfile` | `true` | `true`: the project commits `composer.lock` (cache key, `composer audit --locked`). `false` for libraries. |
+| `artisan` | `php artisan` | Command used for Slipway's own commands and `key:generate`. `vendor/bin/testbench` for packages. |
+| `php` | `['8.3']` | PHP versions. Stages with `matrix => true` run on all of them; other stages use the newest. |
+| `extensions` | common set | PHP extensions to install. |
+| `node` | `null` | Node version, required by steps that build front-end assets. |
+| `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths_ignore`. |
+| `concurrency.cancel_superseded` | `true` | Cancel runs a newer push has made obsolete. Deploys are never cancelled mid-flight. |
+| `timeouts.default` | `20` | Job timeout in minutes. |
+| `cache` | `true` | Cache Composer and npm dependencies. |
+| `env` | `[]` | Non-secret environment variables for every job. |
+| `stages` | required | Ordered stages. See [Stages and steps](/stages-and-steps). |
+| `environments` | `[]` | Where the artifact is deployed. See [Environments](/environments). |
+| `artifact.paths` | app defaults | What `build-artifact` packs into the tarball (only paths that exist). |
+| `policies` | `[]` | Rules evaluated at compile time. See [Policies](/policies). |
+| `secrets` | `[]` | Every secret the pipeline reads, **by name**. Using an undeclared secret fails compilation. |
+| `notifications` | none | `slack` / `teams`: `secret` name and `on` events. See [Notifications](/notifications). |
+| `scan.ignore` | `[]` | Path prefixes the secret scanner skips. |

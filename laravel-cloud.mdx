@@ -1,0 +1,20 @@
+---
+title: "Laravel Cloud"
+description: "Trigger a Laravel Cloud deploy hook for the commit that passed CI."
+---
+
+```php
+'environments' => [
+    'production' => ['branch' => 'main', 'via' => 'cloud', 'verify' => ['url' => 'https://example.com']],
+],
+'secrets' => ['LARAVEL_CLOUD_DEPLOY_HOOK'],
+```
+
+Create a deploy hook in the Cloud environment's settings and store its URL as the `LARAVEL_CLOUD_DEPLOY_HOOK` secret (or name another with `secret`). Slipway `POST`s to it with `commit_hash` set to the commit that passed CI; set `'commit' => false` to deploy the branch head instead.
+
+<Warning>
+  Turn off **deploy on push** for the environment, otherwise Cloud deploys before your tests have finished.
+</Warning>
+
+- Laravel Cloud builds from your repository itself, so there is no artifact to upload.
+- The hook cannot roll back, so `rollback => true` is rejected for this deployer. `verify` still works and fails the job if the site does not come up.

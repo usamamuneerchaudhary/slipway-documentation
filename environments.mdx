@@ -1,0 +1,25 @@
+---
+title: "Environments"
+description: "Slipway builds once and every environment deploys that exact tarball. Nothing is rebuilt per environment."
+---
+
+```php
+'environments' => [
+    'staging'    => ['branch' => 'main', 'via' => 'ssh', 'verify' => [...], 'rollback' => true, 'options' => [...]],
+    'production' => ['after' => 'staging', 'approval' => true, 'via' => 'ssh', ...],
+],
+```
+
+Environment keys: `branch` or `tag` (what triggers it), `after` (run after another environment), `approval` (a human must approve), `via` (deployer), `verify`, `rollback`, `options`.
+
+## Verify
+
+**Verify** runs an HTTP health check after the deploy, with retries: `url` or `url_secret`, plus `path` (default `/up`), `expect` (default `200`), `retries` (default 5), `delay` (seconds, default 10).
+
+If verification fails and `rollback` is on, the previous release is restored and the job still fails, so a broken deploy is never reported as green.
+
+<Warning>
+  Rollback re-points the release; it **does not undo database migrations**. Keep migrations backwards compatible (expand, then contract).
+</Warning>
+
+See [Deployers](/deployers) for `via` options, and [SSH server setup](/ssh-server-setup) for a one-time server layout.

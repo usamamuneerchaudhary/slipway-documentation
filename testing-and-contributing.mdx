@@ -1,0 +1,23 @@
+---
+title: "Testing and contributing"
+description: "Run the suite, regenerate the package's own workflow, and open a pull request."
+---
+
+## Testing
+
+```bash
+composer install
+vendor/bin/pest                       # everything
+vendor/bin/pest --testsuite=Unit
+vendor/bin/pest --testsuite=Conformance
+vendor/bin/pest --testsuite=Feature   # Testbench: real artisan commands
+vendor/bin/pint --test                # code style
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/CONTRIBUTING.md). Pull requests that add a provider driver are very welcome; start with [Writing a driver](/writing-a-driver).
+
+## License
+
+MIT. See [LICENSE](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/LICENSE).

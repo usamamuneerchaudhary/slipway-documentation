@@ -1,0 +1,18 @@
+---
+title: "Commands"
+description: "Init, compile, check, validate, explain, drivers, scan, verify, and pin."
+---
+
+| Command | Purpose |
+|---|---|
+| `slipway:init [--preset=app\|package\|deploy] [--driver=*] [--force]` | Create the config from a preset. |
+| `slipway:compile [--config=] [--dry-run]` | Write the pipeline files. |
+| `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config. |
+| `slipway:validate [--config=]` | Validate the config and policies without writing. |
+| `slipway:explain [--config=]` | Describe the pipeline in plain English. |
+| `slipway:drivers` | The provider capability matrix. |
+| `slipway:scan [--path=]` | Scan the repository for committed credentials. |
+| `slipway:verify {environment} [--url=] [--config=]` | Run an environment's health check from your machine. |
+| `slipway:pin [--config=]` | Resolve the GitHub Actions the workflow uses to commit SHAs, ready to paste into `pins`. |
+
+In a library, run them through Testbench: `vendor/bin/testbench slipway:compile`. See [Presets and libraries](/presets-and-libraries).

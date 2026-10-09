@@ -1,47 +1,42 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Install Slipway, generate a config, compile provider YAML, and let the drift guard keep it honest."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+## Requirements
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+- PHP 8.3+
+- Laravel 11, 12 or 13 (`illuminate/console`, `illuminate/support`, `illuminate/contracts`)
+- For libraries (packages that are not Laravel apps): [Orchestra Testbench](https://github.com/orchestral/testbench)
 
 ## Get started
 
 <Steps>
   <Step title="Install">
-    Describe how to install your product or sign up.
+    Install it as a **dev** dependency. The build artifact is produced with `composer install --no-dev`, so Slipway never ships to production.
 
     ```bash
-    npm install your-package
+    composer require --dev usamamuneerchaudhary/laravel-slipway
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
+  <Step title="Create a config">
     ```bash
-    your-cli init
+    php artisan slipway:init                       # or --preset=deploy / --preset=package
+    php artisan slipway:init --driver=github --driver=bitbucket
     ```
+
+    Review the generated `config/slipway.php`. See [presets and libraries](/presets-and-libraries) if you are compiling a package rather than an app.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
-
+  <Step title="Compile and commit">
     ```bash
-    your-cli start
+    php artisan slipway:compile
+    git add config/slipway.php .github .gitlab-ci.yml bitbucket-pipelines.yml
     ```
+
+    `slipway:compile` writes the provider files. `slipway:check` fails if the committed YAML is stale — CI runs this for you.
   </Step>
 </Steps>
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  Full command list: [Commands](/commands). If a feature is not expressible on a provider, Slipway warns (or errors in `strict` mode) — see [Provider support](/provider-support).
 </Tip>
