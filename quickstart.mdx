@@ -30,7 +30,7 @@ description: "Install Slipway, generate a config, compile provider YAML, and let
   <Step title="Compile and commit">
     ```bash
     php artisan slipway:compile
-    git add config/slipway.php .github .gitlab-ci.yml bitbucket-pipelines.yml
+    git add config/slipway.php .github .gitlab-ci.yml bitbucket-pipelines.yml .circleci/config.yml
     ```
 
     `slipway:compile` writes the provider files. `slipway:check` fails if the committed YAML is stale — CI runs this for you.

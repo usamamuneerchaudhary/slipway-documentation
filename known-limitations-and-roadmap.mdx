@@ -11,7 +11,7 @@ description: "What Slipway does not do yet, and ideas that are not promises."
 - **No database rollback.** Rollback re-points the release; it does not undo migrations. See [Environments](/environments).
 - **Required reviewers, deployment environments and cron schedules** are provider settings that YAML cannot create.
 - **Feature flags and progressive delivery** (canary, blue/green, flag-driven releases) are not built yet.
-- **Provider output is generated, not hosted.** This repository's own CI runs on the generated GitHub Actions workflow. Bitbucket and GitLab output is covered by the test suite; run `slipway:compile` and review it on your first pipeline run.
+- **Provider output is generated, not hosted.** This repository's own CI runs on the generated GitHub Actions and CircleCI files. Bitbucket and GitLab output is covered by the test suite; run `slipway:compile` and review it on your first pipeline run.
 
 ## Roadmap
 

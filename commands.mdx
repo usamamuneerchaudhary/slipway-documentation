@@ -1,23 +1,30 @@
 ---
 title: "Commands"
-description: "Init, compile, check, run, explain, doctor, and the rest of the artisan surface."
+description: "Init, compile, check, validate, explain, test locally, and pin GitHub Actions."
 ---
 
 | Command | Purpose |
 |---|---|
 | `slipway:init [--preset=app\|package\|deploy] [--driver=*] [--force]` | Create the config from a preset. |
 | `slipway:compile [--config=] [--dry-run]` | Write the pipeline files. |
-| `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config, and print a unified diff. |
+| `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config. |
 | `slipway:validate [--config=]` | Validate the config and policies without writing. |
-| `slipway:explain [--config=]` | Describe the pipeline in plain English. On GitHub, also appends to `$GITHUB_STEP_SUMMARY` when that file is set. |
-| `slipway:run {stage?} [--config=]` | Run one local-safe stage on this machine. Skips services, deploys, secrets, and artifacts. Defaults to `quality` when that stage is local-safe. |
-| `slipway:checks [--config=]` | Print the GitHub status-check names branch protection should require. |
-| `slipway:doctor [--config=]` | Verify GitHub secret and environment **names** exist, without printing values. |
+| `slipway:explain [--config=]` | Describe the pipeline in plain English. |
 | `slipway:drivers` | The provider capability matrix. |
 | `slipway:scan [--path=]` | Scan the repository for committed credentials. |
 | `slipway:verify {environment} [--url=] [--config=]` | Run an environment's health check from your machine. |
-| `slipway:pin [--config=]` | Resolve the GitHub Actions the workflow uses to commit SHAs, ready to paste into `pins`. |
-| `slipway:tia [--filtered] [--directory=] [--path=tests/Pest.php]` | Add `pest()->tia()->locally()->baselined()` to an existing Pest configuration. |
-| `slipway:test-pipeline [--driver=] [--stage=] [--run]` | Write `./ci-local.sh` (and optionally run a stage locally in Docker). |
+| `slipway:pin [--config=]` | Resolve the GitHub Actions the workflow uses to commit SHAs, ready to paste into `pins`. Also reads `.github/workflows/tia-baseline.yml` when that file exists. |
+| `slipway:tia [--filtered] [--directory=] [--path=tests/Pest.php]` | Add `pest()->tia()->locally()->baselined()` to an existing Pest configuration. See [Pest TIA](/stages-and-steps#pest-tia). |
+| `slipway:test-pipeline [--driver=] [--stage=] [--php=] [--run] [--clean]` | Write `./ci-local.sh` from the config and run a stage locally in Docker. |
 
 In a library, run them through Testbench: `vendor/bin/testbench slipway:compile`. See [Presets and libraries](/presets-and-libraries).
+
+## Local pipeline
+
+`slipway:test-pipeline` writes `ci-local.sh` and, in an interactive terminal, prompts for driver, stage, and PHP version, then runs. `--no-run` writes the script only. `--no-interaction` needs `--driver` when more than one provider is enabled.
+
+It warns if Docker is not on PATH. `--run` fails instead of starting containers when Docker is missing.
+
+Uncommitted files can make a local run pass when CI would fail. The script warns when `git status --porcelain` is not empty. Pass `--clean` (or `./ci-local.sh --clean`) to clone `HEAD` into a detached worktree. Secrets still come from the project's `.env`.
+
+`--include-deploy` keeps deploy jobs in the script. Those may SSH or call a host.

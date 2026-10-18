@@ -28,10 +28,62 @@ Stage options: `steps`, `matrix`, `parallel` (one job per step), `php` (a versio
 | `npm-test` | `npm ci && npm test` (or `npm run <script>`); needs `node` | `script` |
 | `rector` | `vendor/bin/rector process --dry-run`: reports changes, never rewrites files | `config` |
 | `secret-scan` | `slipway:scan`: scans the files git tracks (plus untracked, non-ignored files), so a local gitignored `.env` is never reported | none |
-| `pest` / `phpunit` | Run the tests; prepares `.env` and the app key | `parallel`, `coverage` (`true` or a minimum %), `services`, `testsuite`, `prepare_env` |
-| `build-assets` | `npm ci && npm run build` | `script` |
+| `pest` / `phpunit` | Run the tests; prepares `.env` and the app key | `parallel`, `coverage` (`true` or a minimum %), `services`, `testsuite`, `prepare_env`; Pest also has `tia` |
+| `infection` | Mutation testing with Infection. Opt-in; not in the default presets. Coverage is always collected with PCOV. | `min_msi`, `min_covered_msi`, `threads`, `config`, `git_diff`, `only_covering_tests`, `prepare_env` |
+| `build-assets` | Install frontend dependencies and build | `preset` (`npm`, `vite`, `bun`), `script` |
+| `sentry` | Inject and upload source maps with the locked `@sentry/cli` | `org`, `project`, `path` (default `public/build`), `token` (secret name, default `SENTRY_AUTH_TOKEN`) |
 | `build-artifact` | Packs **one** tarball, `slipway-build.tar.gz` | `paths`, `optimize` |
 
 Available `services`: `mysql`, `postgres` and `redis`. They start as throwaway containers and the connection settings are exported as environment variables for the job.
+
+## Asset presets
+
+`build-assets` needs `node` unless the preset is `bun`.
+
+| Preset | Install | Build |
+|---|---|---|
+| `npm` (default) | `npm ci` | `npm run <script>` (`script` defaults to `build`) |
+| `vite` | `npm ci` | `npm run <script>` when `script` is set; otherwise `npx vite build` (that case is a compile warning) |
+| `bun` | `bun install --frozen-lockfile` | `bun run <script>` |
+
+Bun needs an exact version in config, for example `'bun' => '1.2.21'`. Slipway installs that release from GitHub and checks the zip against the published checksum. The Bun cache is keyed on the one lockfile that exists (`bun.lock` or `bun.lockb`).
+
+## Pest TIA
+
+`'pest' => ['tia' => true]` writes `.github/workflows/tia-baseline.yml` (GitHub only) following [Pest's TIA workflow](https://pestphp.com/docs/tia). The pull-request test command stays a full suite. CI records a shared baseline on a schedule (default `0 3 * * *`) and on pushes to the first push branch.
+
+Optional map: `php`, `schedule` (5-field cron), `coverage` (`xdebug` or `pcov`, default `xdebug`), `parallel`. When `parallel` is omitted, the baseline matches the Pest step. An explicit `tia.parallel` that the Pest step does not use is a compile warning.
+
+`php artisan slipway:tia` appends `pest()->tia()->locally()->baselined()` to an existing `tests/Pest.php`. It does not create that file. Removing `tia` from the config does not delete an already committed baseline workflow; delete `.github/workflows/tia-baseline.yml` yourself.
+
+## Infection
+
+Typical use is a dedicated stage after tests, on one PHP version, often on a schedule rather than every pull request:
+
+```php
+'mutate' => [
+    'timeout' => 45,
+    'on' => ['schedule'],
+    'steps' => [
+        'infection' => ['min_msi' => 70, 'min_covered_msi' => 80, 'threads' => 4],
+    ],
+],
+```
+
+Mutators and the test runner live in `infection.json` (or `config`). `git_diff` limits mutants to added and modified files against that ref (for example `origin/main`) and fetches it first so a shallow checkout still works.
+
+## Sentry
+
+Put `sentry` after `build-assets` in the same stage. `@sentry/cli` must be in the lockfile so `node_modules/.bin/sentry-cli` exists. The upload sets `--release` from `SENTRY_RELEASE`, or from the CI commit SHA.
+
+```php
+'build' => [
+    'build-assets' => ['preset' => 'vite'],
+    'sentry' => ['org' => 'acme', 'project' => 'web'],
+    'build-artifact',
+],
+```
+
+Declare the token name in `secrets` (default `SENTRY_AUTH_TOKEN`).
 
 To add your own step, see [Extending](/extending).

@@ -8,16 +8,17 @@ description: "Every key is validated. Unknown keys are rejected with a did-you-m
 | `name` | `CI` | Pipeline name shown by the provider. |
 | `drivers` | `github` | Map of provider to `true`/`false` or `enabled`, `path`, `options`, `raw`. See [Drivers](/drivers). |
 | `strict` | `false` | `true`: a feature the provider cannot express is a compile error. `false`: it is left out and reported as a warning. |
-| `guard` | `true` | Adds the `slipway-guard` job that runs `slipway:check` then `slipway:explain`. |
+| `guard` | `true` | Adds the `slipway-guard` job that runs `slipway:check`. |
 | `lockfile` | `true` | `true`: the project commits `composer.lock` (cache key, `composer audit --locked`). `false` for libraries. |
 | `artisan` | `php artisan` | Command used for Slipway's own commands and `key:generate`. `vendor/bin/testbench` for packages. |
 | `php` | `['8.3']` | PHP versions. Stages with `matrix => true` run on all of them; other stages use the newest. |
 | `extensions` | common set | PHP extensions to install. |
-| `node` | `null` | Node version, required by steps that build front-end assets. |
-| `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths` (include globs on push and pull requests; GitHub, GitLab, Bitbucket), `paths_ignore` (GitHub only). |
+| `node` | `null` | Node version, required by steps that build front-end assets with npm or Vite. |
+| `bun` | `null` | Exact Bun version such as `'1.2.21'`, required by `build-assets` preset `bun`. |
+| `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths_ignore` (GitHub only). |
 | `concurrency.cancel_superseded` | `true` | Cancel pull-request runs a newer push has made obsolete. Deploys are never cancelled mid-flight; they queue per environment. See [Out-of-order runs](/environments#out-of-order-runs). |
 | `timeouts.default` | `20` | Job timeout in minutes. |
-| `cache` | `true` | Cache Composer and npm dependencies. |
+| `cache` | `true` | Cache Composer, npm, and Bun lockfiles. |
 | `env` | `[]` | Non-secret environment variables for every job. |
 | `stages` | required | Ordered stages. See [Stages and steps](/stages-and-steps). |
 | `environments` | `[]` | Where the artifact is deployed. See [Environments](/environments). |

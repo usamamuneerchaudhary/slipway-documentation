@@ -8,6 +8,7 @@ description: "Enable providers, override the output path, pin GitHub Actions, an
     'github'    => ['enabled' => true, 'options' => ['permissions' => ['contents' => 'read'], 'pins' => ['actions/checkout' => '<40-char sha>']]],
     'bitbucket' => ['enabled' => true, 'options' => ['image' => 'php:{php}-cli']],
     'gitlab'    => ['enabled' => true, 'path' => '.gitlab-ci.yml', 'raw' => ['default' => ['tags' => ['docker']]]],
+    'circleci'  => ['enabled' => true],
 ],
 ```
 
