@@ -1,6 +1,6 @@
 ---
 title: "Environments"
-description: "Slipway builds once and every environment deploys that exact tarball. Nothing is rebuilt per environment."
+description: "Build once, pin SLIPWAY_SHA, queue deploys per environment, then verify and roll back."
 ---
 
 ```php
@@ -11,6 +11,44 @@ description: "Slipway builds once and every environment deploys that exact tarba
 ```
 
 Environment keys: `branch` or `tag` (what triggers it), `after` (run after another environment), `approval` (a human must approve), `via` (deployer), `verify`, `rollback`, `options`.
+
+## Which commit goes live
+
+Every job receives `SLIPWAY_SHA` from the provider (`github.sha`, `CI_COMMIT_SHA`, `BITBUCKET_COMMIT`, `CIRCLE_SHA1`). Deployers that can pin a commit use that SHA, or the artifact this run packed, rather than the current head of the branch.
+
+| Deployer | What is deployed |
+|---|---|
+| `ssh` | The `slipway-build.tar.gz` artifact from that run, not a fresh `git pull`. |
+| `vapor` | `vapor deploy --commit="$SLIPWAY_SHA"`. |
+| `cloud` | The deploy hook with `commit_hash=$SLIPWAY_SHA`. Set `'commit' => false` to deploy the branch head instead. |
+| `webhook` | A JSON body with `environment`, `sha`, and `ref`. |
+| `command` | The checkout from that run, or the artifact when `artifact` is true. |
+| `forge`, `envoyer` | Their trigger URL only. The host pulls the branch. Turn off their own deploy-on-push. |
+
+See [Deployers](/deployers) and [Laravel Cloud](/laravel-cloud).
+
+## Out-of-order runs
+
+Two CI runs can finish in the wrong order: a slow job on an older commit can complete after a newer one. `concurrency.cancel_superseded` (default `true`) is how Slipway stops that older commit from going live last.
+
+- Pull-request runs that a newer push has made obsolete are cancelled.
+- A deploy that is already running is **not** cancelled. Killing a production release mid-symlink is worse.
+- Deploys for one environment queue. They do not overlap.
+
+<AccordionGroup>
+  <Accordion title="GitHub Actions">
+    One concurrency group per workflow and git ref. `cancel-in-progress` is true only for pull requests, so a push that is mid-deploy is allowed to finish. Each environment also has group `slipway-deploy-<name>` with `cancel-in-progress: false`, so production deploys serialize.
+  </Accordion>
+  <Accordion title="GitLab CI/CD">
+    Non-deploy jobs are `interruptible`. Deploy jobs are not. Each environment uses a `resource_group`. Turn on **Auto-cancel redundant pipelines** under Settings → CI/CD → General pipelines.
+  </Accordion>
+  <Accordion title="Bitbucket Pipelines">
+    YAML cannot cancel superseded runs. Slipway reports this when you compile.
+  </Accordion>
+  <Accordion title="CircleCI">
+    YAML cannot cancel superseded runs. Turn on **Auto-cancel redundant workflows** under Project Settings → Advanced. Deploys use `serial-group` per environment, which queues them and skips an older pipeline that is still waiting behind a newer one.
+  </Accordion>
+</AccordionGroup>
 
 ## Verify
 

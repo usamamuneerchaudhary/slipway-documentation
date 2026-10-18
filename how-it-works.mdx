@@ -20,3 +20,5 @@ flowchart TD
 5. Each enabled **driver** (GitHub Actions, Bitbucket Pipelines, GitLab CI) writes YAML.
 
 Output is deterministic: no timestamps, stable ordering, a short config hash in the header. That is what lets `slipway:check` detect drift with a byte comparison (line endings are ignored, so a Windows checkout with `core.autocrlf` is not reported as drift). Neither the header nor the hash contains the Slipway version, so upgrading Slipway never makes your committed pipeline files stale; only a change to the output itself does.
+
+Every job also gets `SLIPWAY_SHA` for the commit this run tested. Deploys use that SHA (or the artifact from that run), and a slower older pipeline is not allowed to overwrite a newer one. See [Which commit goes live](/environments#which-commit-goes-live).

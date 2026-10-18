@@ -10,7 +10,7 @@ description: "Trigger a Laravel Cloud deploy hook for the commit that passed CI.
 'secrets' => ['LARAVEL_CLOUD_DEPLOY_HOOK'],
 ```
 
-Create a deploy hook in the Cloud environment's settings and store its URL as the `LARAVEL_CLOUD_DEPLOY_HOOK` secret (or name another with `secret`). Slipway `POST`s to it with `commit_hash` set to the commit that passed CI; set `'commit' => false` to deploy the branch head instead.
+Create a deploy hook in the Cloud environment's settings and store its URL as the `LARAVEL_CLOUD_DEPLOY_HOOK` secret (or name another with `secret`). Slipway `POST`s to it with `commit_hash` set to `SLIPWAY_SHA` (the commit this pipeline tested), not the current head of the branch. Set `'commit' => false` to deploy the branch head instead.
 
 <Warning>
   Turn off **deploy on push** for the environment, otherwise Cloud deploys before your tests have finished.

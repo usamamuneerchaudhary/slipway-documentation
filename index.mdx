@@ -46,6 +46,7 @@ php artisan slipway:check     # fails if the committed YAML is stale (CI runs th
 | Someone edits the workflow in a hurry and nobody reviews it properly | A `slipway-guard` job fails the build when the YAML differs from the config. |
 | Secrets end up in YAML, logs or shell history | Secrets are referenced **by name only**. A scanner checks the config and the generated output. Values are never printed. |
 | "We deploy on Fridays and hope" | Build once, deploy that same artifact to every environment, health-check it, roll back automatically. |
+| An older CI run finishes last and overwrites a newer deploy | Deploys pin `SLIPWAY_SHA` (or that run's artifact) and queue per environment. See [Which commit goes live](/environments#which-commit-goes-live). |
 | Safety rules live in a wiki | **Policies** such as `tests-before-deploy` fail compilation if a change would weaken them. |
 | Provider lock-in | Switch or add a provider with one line. Unsupported features are reported, or are errors in `strict` mode. |
 

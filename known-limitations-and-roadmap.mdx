@@ -5,6 +5,8 @@ description: "What Slipway does not do yet, and ideas that are not promises."
 
 ## Known limitations
 
+- **Forge and Envoyer cannot pin a commit.** Their trigger URLs do not accept a SHA. The host pulls the branch. Use `ssh`, `vapor`, `cloud`, `webhook`, or `command` when the exact tested commit must go live. See [Which commit goes live](/environments#which-commit-goes-live).
+- **Bitbucket cannot cancel superseded runs** from YAML. CircleCI and GitLab need a project setting for that. See [Out-of-order runs](/environments#out-of-order-runs).
 - **Bitbucket files are large.** Bitbucket Pipelines has no matrix syntax, and Slipway's YAML emitter does not use anchors or aliases (to keep output simple to review and byte-stable), so steps are repeated for each trigger and each PHP version. A full pipeline can run to tens of kilobytes.
 - **No database rollback.** Rollback re-points the release; it does not undo migrations. See [Environments](/environments).
 - **Required reviewers, deployment environments and cron schedules** are provider settings that YAML cannot create.

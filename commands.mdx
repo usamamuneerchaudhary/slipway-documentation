@@ -1,18 +1,23 @@
 ---
 title: "Commands"
-description: "Init, compile, check, validate, explain, drivers, scan, verify, and pin."
+description: "Init, compile, check, run, explain, doctor, and the rest of the artisan surface."
 ---
 
 | Command | Purpose |
 |---|---|
 | `slipway:init [--preset=app\|package\|deploy] [--driver=*] [--force]` | Create the config from a preset. |
 | `slipway:compile [--config=] [--dry-run]` | Write the pipeline files. |
-| `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config. |
+| `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config, and print a unified diff. |
 | `slipway:validate [--config=]` | Validate the config and policies without writing. |
-| `slipway:explain [--config=]` | Describe the pipeline in plain English. |
+| `slipway:explain [--config=]` | Describe the pipeline in plain English. On GitHub, also appends to `$GITHUB_STEP_SUMMARY` when that file is set. |
+| `slipway:run {stage?} [--config=]` | Run one local-safe stage on this machine. Skips services, deploys, secrets, and artifacts. Defaults to `quality` when that stage is local-safe. |
+| `slipway:checks [--config=]` | Print the GitHub status-check names branch protection should require. |
+| `slipway:doctor [--config=]` | Verify GitHub secret and environment **names** exist, without printing values. |
 | `slipway:drivers` | The provider capability matrix. |
 | `slipway:scan [--path=]` | Scan the repository for committed credentials. |
 | `slipway:verify {environment} [--url=] [--config=]` | Run an environment's health check from your machine. |
 | `slipway:pin [--config=]` | Resolve the GitHub Actions the workflow uses to commit SHAs, ready to paste into `pins`. |
+| `slipway:tia [--filtered] [--directory=] [--path=tests/Pest.php]` | Add `pest()->tia()->locally()->baselined()` to an existing Pest configuration. |
+| `slipway:test-pipeline [--driver=] [--stage=] [--run]` | Write `./ci-local.sh` (and optionally run a stage locally in Docker). |
 
 In a library, run them through Testbench: `vendor/bin/testbench slipway:compile`. See [Presets and libraries](/presets-and-libraries).

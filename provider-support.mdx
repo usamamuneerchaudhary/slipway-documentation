@@ -5,20 +5,23 @@ description: "Features a provider cannot express are left out with a warning, or
 
 `php artisan slipway:drivers` prints this for your installed drivers.
 
-| Feature | Bitbucket Pipelines | GitHub Actions | GitLab CI/CD |
-|---|---|---|---|
-| PHP version matrix | partial | yes | yes |
-| Service containers | yes | yes | yes |
-| Manual approvals | yes | partial | yes |
-| Deployment environments | partial | yes | yes |
-| Cancel superseded runs | no | yes | partial |
-| Scheduled runs | partial | yes | partial |
-| Manual trigger | yes | yes | yes |
-| Artifact promotion | partial | yes | partial |
-| Path filters | no | yes | no |
-| Job timeouts | yes | yes | yes |
-| Dependency caching | yes | yes | yes |
-| Parallel jobs | yes | yes | yes |
-| Tag triggers | yes | yes | yes |
+| Feature | Bitbucket Pipelines | CircleCI | GitHub Actions | GitLab CI/CD |
+|---|---|---|---|---|
+| PHP version matrix | partial | yes | yes | yes |
+| Service containers | yes | yes | yes | yes |
+| Manual approvals | yes | yes | partial | yes |
+| Deployment environments | partial | partial | yes | yes |
+| Cancel superseded runs | no | partial | yes | partial |
+| Scheduled runs | partial | partial | yes | partial |
+| Manual trigger | yes | partial | yes | yes |
+| Artifact promotion | partial | partial | yes | partial |
+| Path filters | no | no | yes | no |
+| Path include filters | yes | no | yes | yes |
+| Job timeouts | yes | partial | yes | yes |
+| Dependency caching | yes | yes | yes | yes |
+| Parallel jobs | yes | yes | yes | yes |
+| Tag triggers | yes | yes | yes | yes |
 
-Some of the "partial" entries need a one-time setting in the provider's UI (for example GitHub required reviewers, Bitbucket deployment environments, GitLab "Auto-cancel redundant pipelines", and the actual cron schedule on Bitbucket and GitLab). Slipway prints exactly which one when it compiles.
+Some of the "partial" entries need a one-time setting in the provider's UI (for example GitHub required reviewers, Bitbucket deployment environments, GitLab **Auto-cancel redundant pipelines**, CircleCI **Auto-cancel redundant workflows**, and the actual cron schedule on Bitbucket, GitLab, and CircleCI). Slipway prints exactly which one when it compiles.
+
+How superseded runs and per-environment deploy queues work is on [Out-of-order runs](/environments#out-of-order-runs).

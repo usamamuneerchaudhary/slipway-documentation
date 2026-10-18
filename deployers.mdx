@@ -7,15 +7,21 @@ Set `via` on an environment. Options live under `options`.
 
 | Deployer | What it does | Options |
 |---|---|---|
-| `ssh` | Zero-downtime release over SSH: rsync a new `releases/<timestamp>`, share `.env` and `storage`, atomically switch the `current` symlink, prune old releases. Host keys are verified (`StrictHostKeyChecking=yes`). | `host`, `user`, `path`, `port`, `keep_releases`, `migrate`, `optimize`, `storage_link`, `post_deploy`, `key_secret`, `known_hosts_secret` |
-| `vapor` | `vendor/bin/vapor deploy` | `secret`, `environment` |
-| `forge` | Calls the Forge deployment trigger URL | `secret` |
+| `ssh` | Zero-downtime release over SSH: rsync a new `releases/<timestamp>`, share `.env` and `storage`, atomically switch the `current` symlink, prune old releases. Host keys are verified (`StrictHostKeyChecking=yes`). Deploys the artifact from **this** CI run. | `host`, `user`, `path`, `port`, `keep_releases`, `migrate`, `optimize`, `storage_link`, `post_deploy`, `key_secret`, `known_hosts_secret` |
+| `vapor` | `vendor/bin/vapor deploy --commit="$SLIPWAY_SHA"` | `secret`, `environment` |
+| `forge` | Calls the Forge deployment trigger URL. Forge then pulls the branch; it does not receive the SHA. | `secret` |
 | `cloud` | Calls the [Laravel Cloud](/laravel-cloud) deploy hook for the commit that passed CI | `secret`, `commit` |
-| `envoyer` | Calls the Envoyer deployment hook | `secret` |
-| `webhook` | `POST` to your own endpoint | `secret`, `rollback_secret` |
+| `envoyer` | Calls the Envoyer deployment hook. Envoyer then pulls the branch; it does not receive the SHA. | `secret` |
+| `webhook` | `POST` JSON `{environment, sha, ref}` to your own endpoint | `secret`, `rollback_secret` |
 | `command` | Your own shell commands | `commands`, `rollback_commands`, `secrets`, `tools`, `php`, `artifact` |
 
 A server using `ssh` needs a one-time setup. See [SSH server setup](/ssh-server-setup).
+
+Which commit is deployed, and how Slipway stops an older CI run from going live last, is on [Environments](/environments).
+
+<Warning>
+  `forge` and `envoyer` only hit a trigger URL. They cannot deploy `SLIPWAY_SHA`. Turn off their own deploy-on-push so they do not race the pipeline.
+</Warning>
 
 <Warning>
   Rollback re-points the release; it **does not undo database migrations**. Keep migrations backwards compatible (expand, then contract).
