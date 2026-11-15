@@ -23,9 +23,10 @@ description: "Install Slipway, generate a config, compile provider YAML, and let
     ```bash
     php artisan slipway:init                       # or --preset=deploy / --preset=package
     php artisan slipway:init --driver=github --driver=bitbucket
+    php artisan slipway:init --branch=develop      # pushes CI should run on
     ```
 
-    Review the generated `config/slipway.php`. See [presets and libraries](/presets-and-libraries) if you are compiling a package rather than an app.
+    Setup asks which branch CI should run on (`main`, `master`, `develop`, or another branch). `--no-interaction` keeps `main`. Review the generated `config/slipway.php`. See [presets and libraries](/presets-and-libraries) if you are compiling a package rather than an app.
   </Step>
   <Step title="Compile and commit">
     ```bash

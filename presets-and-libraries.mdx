@@ -14,11 +14,14 @@ description: "Choose an init preset, and compile Slipway itself through Testbenc
 ```bash
 php artisan slipway:init --preset=deploy
 php artisan slipway:init --preset=package
+php artisan slipway:init --branch=develop
 ```
+
+Init asks which branch pushes should run on. The deploy preset writes that same branch on staging. `--no-interaction` keeps `main`.
 
 ## Libraries (packages)
 
-A library has no `artisan` file and does not commit `composer.lock`. The `package` preset sets:
+A library has no `artisan` file and does not commit `composer.lock`. The `package` preset tests PHP 8.3 and 8.4, because Slipway itself needs PHP 8.3 or newer. It sets:
 
 ```php
 'artisan'  => 'vendor/bin/testbench',   // Slipway's own commands run through Testbench
@@ -34,3 +37,5 @@ Add this to the library's `composer.json` so Testbench discovers Slipway's servi
 ```
 
 then use `vendor/bin/testbench slipway:compile` and `vendor/bin/testbench slipway:check`. The Slipway repository builds its own pipeline that way: see [`slipway.php`](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/slipway.php) and [`.github/workflows/slipway.yml`](https://github.com/usamamuneerchaudhary/laravel-slipway/blob/main/.github/workflows/slipway.yml).
+
+Libraries do not commit `composer.lock`, so CI installs the latest Slipway that matches your constraint. After a Slipway release that changes generated YAML, run `slipway:compile` and commit the files. A change to only the `config hash` comment in the header is not a hand edit.

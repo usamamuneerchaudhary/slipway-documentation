@@ -5,7 +5,7 @@ description: "Init, compile, check, validate, explain, test locally, and pin Git
 
 | Command | Purpose |
 |---|---|
-| `slipway:init [--preset=app\|package\|deploy] [--driver=*] [--force]` | Create the config from a preset. |
+| `slipway:init [--preset=app\|package\|deploy] [--driver=*] [--branch=] [--force]` | Create the config from a preset. Asks which branch pushes should run on. `--branch=develop` skips the prompt. `--no-interaction` keeps `main`. The deploy preset uses that branch for staging. |
 | `slipway:compile [--config=] [--dry-run]` | Write the pipeline files. |
 | `slipway:check [--config=]` | Exit non-zero if the committed files differ from the config. |
 | `slipway:validate [--config=]` | Validate the config and policies without writing. |

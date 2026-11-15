@@ -15,7 +15,7 @@ description: "Every key is validated. Unknown keys are rejected with a did-you-m
 | `extensions` | common set | PHP extensions to install. |
 | `node` | `null` | Node version, required by steps that build front-end assets with npm or Vite. |
 | `bun` | `null` | Exact Bun version such as `'1.2.21'`, required by `build-assets` preset `bun`. |
-| `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths_ignore` (GitHub only). |
+| `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths_ignore` (GitHub only). `slipway:init` asks for the push branch. |
 | `concurrency.cancel_superseded` | `true` | Cancel pull-request runs a newer push has made obsolete. Deploys are never cancelled mid-flight; they queue per environment. See [Out-of-order runs](/environments#out-of-order-runs). |
 | `timeouts.default` | `20` | Job timeout in minutes. |
 | `cache` | `true` | Cache Composer, npm, and Bun lockfiles. |
