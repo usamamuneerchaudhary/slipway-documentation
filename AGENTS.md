@@ -1,6 +1,6 @@
 # Documentation project instructions
 
-This is the Mintlify documentation site for **Slipway**, a Laravel package that compiles `config/slipway.php` into GitHub Actions, Bitbucket Pipelines and GitLab CI.
+This is the Mintlify documentation site for **Slipway**, a Laravel package that compiles `config/slipway.php` into GitHub Actions, Bitbucket Pipelines, GitLab CI and CircleCI.
 
 Live site: https://laravel-slipway.mintlify.site/
 Package: https://github.com/usamamuneerchaudhary/laravel-slipway
@@ -14,7 +14,7 @@ For Mintlify product knowledge (components, configuration, writing standards), i
 - **Slipway** — the package. Not "Shipway".
 - **config** — `config/slipway.php` in a Laravel app, or `slipway.php` in a library.
 - **pipeline** — the provider-neutral model Slipway compiles.
-- **driver** — renders a pipeline as one provider's YAML (GitHub, Bitbucket, GitLab, or a custom driver).
+- **driver** — renders a pipeline as one provider's YAML (GitHub, Bitbucket, GitLab, CircleCI, or a custom driver).
 - **deployer** — how an environment ships the artifact (`ssh`, `vapor`, `forge`, `cloud`, `envoyer`, `webhook`, `command`).
 - **policy** — a compile-time rule. Failures stop compilation.
 - **step** — a built-in alias, a `PipelineStep` class, or an inline POSIX `sh` command.

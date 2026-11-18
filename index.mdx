@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Define your CI/CD once, in PHP. Compile it to GitHub Actions, Bitbucket Pipelines and GitLab CI."
+description: "Define your CI/CD once, in PHP. Compile it to GitHub Actions, Bitbucket Pipelines, GitLab CI and CircleCI."
 ---
 
 <Frame>
@@ -13,7 +13,7 @@ description: "Define your CI/CD once, in PHP. Compile it to GitHub Actions, Bitb
 // config/slipway.php
 return [
     'drivers' => ['github' => true, 'gitlab' => true],
-    'php'     => ['8.3', '8.4'],
+    'php'     => ['8.3', '8.4', '8.5'],
 
     'stages' => [
         'quality' => ['pint', 'larastan', 'composer-audit', 'secret-scan'],

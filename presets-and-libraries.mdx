@@ -21,7 +21,7 @@ Init asks which branch pushes should run on. The deploy preset writes that same 
 
 ## Libraries (packages)
 
-A library has no `artisan` file and does not commit `composer.lock`. The `package` preset tests PHP 8.3 and 8.4, because Slipway itself needs PHP 8.3 or newer. It sets:
+A library has no `artisan` file and does not commit `composer.lock`. The `package` preset tests PHP 8.3, 8.4 and 8.5. It starts at 8.3 because Slipway itself needs PHP 8.3 or newer. It sets:
 
 ```php
 'artisan'  => 'vendor/bin/testbench',   // Slipway's own commands run through Testbench
