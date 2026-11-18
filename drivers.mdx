@@ -36,6 +36,10 @@ The `github` driver uses these actions. Each `actions/*` default runs on Node.js
 
 Self-hosted runners need Actions Runner 2.327.1 or later for these versions.
 
+<Warning>
+  Slipway 1.10 moved these defaults from `v4`. The generated workflow changes, so run `slipway:compile` once after upgrading and commit the result. Until then `slipway:check` reports the workflow as out of date.
+</Warning>
+
 Major-version tags are mutable. Run `slipway:pin` and put the SHAs it prints in `pins`. A pin replaces the default for that action, so run `slipway:pin` again when you want a newer default. See [Security model](/security-model).
 
 `setup-node` is given `package-manager-cache: false`. Dependency caching follows the `cache` key only.
