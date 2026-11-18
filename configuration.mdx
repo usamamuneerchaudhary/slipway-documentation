@@ -18,7 +18,7 @@ description: "Every key is validated. Unknown keys are rejected with a did-you-m
 | `triggers` | push to `main`, PRs | `push` (branches or `false`), `tags`, `pull_request` (`true`, `false` or target branches), `schedule` (cron, UTC), `manual`, `paths_ignore` (GitHub only). `slipway:init` asks for the push branch. |
 | `concurrency.cancel_superseded` | `true` | Cancel pull-request runs a newer push has made obsolete. Deploys are never cancelled mid-flight; they queue per environment. See [Out-of-order runs](/environments#out-of-order-runs). |
 | `timeouts.default` | `20` | Job timeout in minutes. |
-| `cache` | `true` | Cache Composer, npm, and Bun lockfiles. |
+| `cache` | `true` | Cache Composer, npm, and Bun lockfiles. `false` turns every dependency cache off, including on GitHub, where `setup-node` is told not to add one of its own. |
 | `env` | `[]` | Non-secret environment variables for every job. |
 | `stages` | required | Ordered stages. See [Stages and steps](/stages-and-steps). |
 | `environments` | `[]` | Where the artifact is deployed. See [Environments](/environments). |
