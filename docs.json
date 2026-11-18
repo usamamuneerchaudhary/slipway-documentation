@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Slipway",
-  "description": "Define your Laravel CI/CD once in PHP. Compile it to GitHub Actions, Bitbucket Pipelines and GitLab CI.",
+  "description": "Define your Laravel CI/CD once in PHP. Compile it to GitHub Actions, Bitbucket Pipelines, GitLab CI and CircleCI.",
   "colors": {
     "primary": "#FF6A2B",
     "light": "#FF6A2B",
